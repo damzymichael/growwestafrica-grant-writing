@@ -240,34 +240,6 @@
 
 <div class="section-divider max-w-7xl mx-auto"></div>
 
-<!-- Instructor -->
-<section id="instructor" class="py-24 relative">
-  <div class="relative max-w-7xl mx-auto px-6">
-    <div class="glass rounded-3xl p-8 md:p-16 grid md:grid-cols-2 gap-12 items-center">
-      <div class="relative">
-        <div class="rounded-3xl overflow-hidden" style="border:2px solid rgba(107,140,66,.3)">
-          <img src="images/instructor.png" alt="Expert Instructor" class="w-full h-[450px] object-cover"/>
-        </div>
-        <div class="absolute -bottom-4 -right-4 bg-olive-600 rounded-2xl px-6 py-3 shadow-lg">
-          <p class="text-white font-bold text-sm">$100k+ Secured</p>
-        </div>
-      </div>
-      <div>
-        <span class="text-olive-400 font-semibold text-sm uppercase tracking-widest">Meet Your Mentor</span>
-        <h2 class="text-3xl md:text-4xl font-bold mt-3 mb-6">Your Expert <span class="gradient-text">Instructor</span></h2>
-        <p class="text-stone-400 text-lg leading-relaxed mb-8">Led by a seasoned grant writer with over 15 years of experience and $100k+ in successful funding secured.</p>
-        <div class="space-y-4">
-          <div class="flex items-center gap-4"><div class="w-10 h-10 bg-olive-500/15 rounded-full flex items-center justify-center shrink-0"><svg class="w-5 h-5 text-olive-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div><span class="text-stone-300">5+ Years of Grant Writing Experience</span></div>
-          <div class="flex items-center gap-4"><div class="w-10 h-10 bg-olive-500/15 rounded-full flex items-center justify-center shrink-0"><svg class="w-5 h-5 text-olive-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div><span class="text-stone-300">$100k+ in Grants Successfully Secured</span></div>
-          <div class="flex items-center gap-4"><div class="w-10 h-10 bg-olive-500/15 rounded-full flex items-center justify-center shrink-0"><svg class="w-5 h-5 text-olive-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div><span class="text-stone-300">60+ Students Successfully Trained</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider max-w-7xl mx-auto"></div>
-
 <!-- Curriculum -->
 <section id="curriculum" class="py-24 relative">
   <div class="absolute inset-0 bg-gradient-to-b from-dark-950 via-olive-900/5 to-dark-950"></div>
