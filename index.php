@@ -56,8 +56,7 @@
       <a href="#why" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Why Us</a>
       <a href="#outcomes" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Outcomes</a>
       <a href="#curriculum" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Curriculum</a>
-      <a href="#instructor" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Instructor</a>
-      <a href="#cta" class="btn-primary px-6 py-2.5 rounded-full text-white font-semibold text-sm"><span>Enroll Now</span></a>
+      <a href="enroll.php" class="btn-primary px-6 py-2.5 rounded-full text-white font-semibold text-sm"><span>Enroll Now</span></a>
     </div>
     <button id="mobile-toggle" class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
       <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -68,7 +67,7 @@
     <a href="#outcomes" class="block text-stone-300 hover:text-olive-400">Outcomes</a>
     <a href="#curriculum" class="block text-stone-300 hover:text-olive-400">Curriculum</a>
     <a href="#instructor" class="block text-stone-300 hover:text-olive-400">Instructor</a>
-    <a href="#cta" class="block btn-primary px-6 py-2.5 rounded-full text-white font-semibold text-center text-sm"><span>Enroll Now</span></a>
+    <a href="enroll.php" class="block btn-primary px-6 py-2.5 rounded-full text-white font-semibold text-center text-sm"><span>Enroll Now</span></a>
   </div>
 </nav>
 
@@ -90,7 +89,7 @@
         Master the art of winning grant proposals. Transform your writing skills and secure the funding you need. Learn proven strategies that have helped secure over <strong class="text-white">$100k+</strong> in grants.
       </p>
       <div class="fade-up delay-3 flex flex-wrap gap-4 mb-12">
-        <a href="#cta" class="btn-primary px-8 py-4 rounded-full text-white font-bold text-lg glow"><span>Start Your Journey →</span></a>
+        <a href="enroll.php" class="btn-primary px-8 py-4 rounded-full text-white font-bold text-lg glow"><span>Start Your Journey →</span></a>
         <a href="#curriculum" class="glass px-8 py-4 rounded-full text-white font-semibold hover:bg-white/10 transition">View Curriculum</a>
       </div>
       <!-- Stats Row -->
@@ -326,7 +325,7 @@
       <span class="text-olive-400 font-semibold text-sm uppercase tracking-widest">Limited Spots Available</span>
       <h2 class="text-3xl md:text-5xl font-bold mt-4 mb-6">Ready to Transform Your <span class="gradient-text">Grant Writing?</span></h2>
       <p class="text-stone-400 text-lg mb-10 max-w-xl mx-auto">Join the next cohort and start writing winning proposals that secure the funding your projects deserve.</p>
-      <a href="#" class="inline-block btn-primary px-12 py-5 rounded-full text-white font-bold text-xl glow"><span>Enroll Now — Start Your Journey</span></a>
+      <a href="enroll.php" class="inline-block btn-primary px-12 py-5 rounded-full text-white font-bold text-xl glow"><span>Enroll Now — Start Your Journey</span></a>
       <div class="flex flex-wrap justify-center gap-8 mt-10 text-stone-400 text-sm">
         <div class="flex items-center gap-2"><svg class="w-5 h-5 text-olive-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5-Day Intensive</div>
         <div class="flex items-center gap-2"><svg class="w-5 h-5 text-olive-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Templates Included</div>
