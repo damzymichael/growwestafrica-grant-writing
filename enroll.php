@@ -1,5 +1,77 @@
 <?php
-// PHP logic here (e.g. form processing, database connections, session management)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $location = $_POST['location'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    
+    // Server-side validation
+    if (empty($name) || empty($email) || empty($location) || empty($phone) || empty($_FILES['receipt']['name'])) {
+        $error = "All fields are required.";
+    } else {
+        $env = parse_ini_file('.env'); 
+        // --- 1. Cloudinary Upload ---
+        $cloudinary_cloud_name = $env['CLOUDINARY_CLOUD_NAME'];
+        $cloudinary_api_key = $env['CLOUDINARY_API_KEY'];
+        $cloudinary_api_secret = $env['CLOUDINARY_API_SECRET'];
+        
+        $timestamp = time();
+        $params_to_sign = "timestamp=" . $timestamp . $cloudinary_api_secret;
+        $signature = sha1($params_to_sign);
+
+        $cloudinary_url = "https://api.cloudinary.com/v1_1/$cloudinary_cloud_name/image/upload";
+        
+        $ch_cloud = curl_init($cloudinary_url);
+        curl_setopt($ch_cloud, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch_cloud, CURLOPT_POST, true);
+        curl_setopt($ch_cloud, CURLOPT_POSTFIELDS, [
+            'file' => new CURLFile($_FILES['receipt']['tmp_name']),
+            'api_key' => $cloudinary_api_key,
+            'timestamp' => $timestamp,
+            'signature' => $signature
+        ]);
+        
+        $cloud_response = curl_exec($ch_cloud);
+        $cloud_data = json_decode($cloud_response, true);
+        curl_close($ch_cloud);
+
+        $receipt_url = $cloud_data['secure_url'] ?? "https://res.cloudinary.com/demo/image/upload/v123456789/upload_error.jpg";
+        
+        // --- 2. Google Sheets Integration ---
+        $postData = json_encode([
+            "name" => $name,
+            "email" => $email,
+            "phone" => $phone,
+            "location" => $location,
+            "imageUrl" => $receipt_url
+        ]);
+
+        $ch = curl_init($env['GOOGLE_SHEETS_DEPLOYMENT_URL']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        $gas_response = curl_exec($ch);
+        curl_close($ch);
+
+        // --- 3. Email Admin ---
+        $admin_email = $env['ADMIN_EMAIL'];
+        $subject = "New Enrollment: $name";
+        $message = "New enrollment details:\n\n" .
+                   "Name: $name\n" .
+                   "Email: $email\n" .
+                   "Phone: $phone\n" .
+                   "Location: $location\n" .
+                   "Receipt: $receipt_url\n";
+        $headers = "From: no-reply@growwestafrica.com";
+        
+        @mail($admin_email, $subject, $message, $headers);
+
+        // --- 4. Success Redirect ---
+        header("Location: thankyou.php");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,30 +144,92 @@
     </div>
 
     <div class="glass rounded-3xl p-8 md:p-10 fade-up delay-1">
-      <form action="#" method="POST" class="space-y-6">
+      <!-- Pricing & Payment Info -->
+      <div class="glass rounded-[2rem] p-6 mb-8 border-olive-500/20 relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-olive-500/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-olive-500/20 transition-all duration-500"></div>
+        
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <p class="text-stone-500 text-xs uppercase tracking-widest font-bold mb-1">Investment</p>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-black text-white">GHS 1,000</span>
+              <span class="text-sm text-stone-500 line-through">GHS 5,000</span>
+            </div>
+          </div>
+          <div class="bg-olive-500/20 text-olive-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight border border-olive-500/30">
+            80% OFF TODAY
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+            <p class="text-[10px] text-stone-500 uppercase font-bold mb-2 tracking-wider">Bank Transfer</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-bold text-white">Access Bank</p>
+                <p class="text-xs text-stone-400">Account: 0123456789</p>
+              </div>
+              <button onclick="copyToClipboard('0123456789', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+            <p class="text-[10px] text-stone-500 uppercase font-bold mb-2 tracking-wider">Mobile Money (MoMo)</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-bold text-white">MTN Mobile Money</p>
+                <p class="text-xs text-stone-400">Number: 0540000000</p>
+              </div>
+              <button onclick="copyToClipboard('0540000000', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data" class="space-y-6" novalidate>
         <div class="space-y-2">
           <label for="name" class="text-sm font-semibold text-stone-300 ml-1">Full Name</label>
-          <input type="text" id="name" name="name" required placeholder="John Doe" 
-                 class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600">
+          <input type="text" id="name" name="name" placeholder="John Doe" 
+                 class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600 transition-all">
+          <p id="name-error" class="text-red-400 text-[10px] ml-1 hidden font-medium">Please enter your full name</p>
         </div>
 
         <div class="space-y-2">
           <label for="email" class="text-sm font-semibold text-stone-300 ml-1">Email Address</label>
-          <input type="email" id="email" name="email" required placeholder="john@example.com" 
-                 class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600">
+          <input type="email" id="email" name="email" placeholder="john@example.com" 
+                 class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600 transition-all">
+          <p id="email-error" class="text-red-400 text-[10px] ml-1 hidden font-medium">Please enter a valid email address</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label for="location" class="text-sm font-semibold text-stone-300 ml-1">Location</label>
-            <input type="text" id="location" name="location" required placeholder="Lagos, Nigeria" 
-                   class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600">
+            <input type="text" id="location" name="location" placeholder="Accra, Ghana" 
+                   class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600 transition-all">
+            <p id="location-error" class="text-red-400 text-[10px] ml-1 hidden font-medium">Please enter your location</p>
           </div>
           <div class="space-y-2">
             <label for="phone" class="text-sm font-semibold text-stone-300 ml-1">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required placeholder="+234..." 
-                   class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600">
+            <input type="tel" id="phone" name="phone" placeholder="+233..." 
+                   class="w-full px-5 py-4 rounded-2xl input-field text-white placeholder:text-stone-600 transition-all">
+            <p id="phone-error" class="text-red-400 text-[10px] ml-1 hidden font-medium">Please enter your phone number</p>
           </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="receipt" class="text-sm font-semibold text-stone-300 ml-1">Payment Receipt (Image)</label>
+          <div class="relative">
+            <input type="file" id="receipt" name="receipt" accept="image/*" class="hidden">
+            <label for="receipt" id="receipt-label" class="flex items-center justify-between w-full px-5 py-4 rounded-2xl input-field text-stone-500 cursor-pointer hover:bg-white/5 transition-all">
+              <span id="file-name">Upload Screenshot</span>
+              <svg class="w-5 h-5 text-olive-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+            </label>
+          </div>
+          <p id="receipt-error" class="text-red-400 text-[10px] ml-1 hidden font-medium">Please upload your payment receipt image</p>
         </div>
 
         <button type="submit" class="w-full btn-primary py-5 rounded-2xl text-white font-bold text-lg shadow-xl shadow-olive-900/20 group">
@@ -114,18 +248,95 @@
 <footer class="py-10 border-t border-white/5 text-center">
   <p class="text-stone-600 text-sm">&copy; 2026 Grow West Africa. All rights reserved.</p>
 </footer>
-
 <script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-up');
-        observer.unobserve(entry.target);
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-up');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Custom Validation & UI Logic
+    const form = document.querySelector('form');
+    const fileInput = document.getElementById('receipt');
+    const fileNameDisplay = document.getElementById('file-name');
+    const receiptLabel = document.getElementById('receipt-label');
+
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          fileNameDisplay.textContent = e.target.files[0].name;
+          fileNameDisplay.classList.remove('text-stone-500');
+          fileNameDisplay.classList.add('text-white');
+          receiptLabel.classList.remove('border-red-500/50');
+          document.getElementById('receipt-error').classList.add('hidden');
+        }
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        let isValid = true;
+        const inputs = [
+          { id: 'name', error: 'name-error', validate: (val) => val && val.trim().length > 0 },
+          { id: 'email', error: 'email-error', validate: (val) => val && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+          { id: 'location', error: 'location-error', validate: (val) => val && val.trim().length > 0 },
+          { id: 'phone', error: 'phone-error', validate: (val) => val && val.trim().length >= 10 },
+          { id: 'receipt', error: 'receipt-error', validate: () => fileInput && fileInput.files && fileInput.files.length > 0, isFile: true }
+        ];
+
+        inputs.forEach(input => {
+          const field = document.getElementById(input.id);
+          const errorMsg = document.getElementById(input.error);
+          if (!field || !errorMsg) return;
+
+          const isFieldValid = input.isFile ? input.validate() : input.validate(field.value);
+
+          if (!isFieldValid) {
+            errorMsg.classList.remove('hidden');
+            if (input.isFile) {
+              receiptLabel.classList.add('border-red-500/50');
+            } else {
+              field.classList.add('border-red-500/50');
+            }
+            isValid = false;
+          } else {
+            errorMsg.classList.add('hidden');
+            if (input.isFile) {
+              receiptLabel.classList.remove('border-red-500/50');
+            } else {
+              field.classList.remove('border-red-500/50');
+            }
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          e.stopPropagation();
+          const firstError = document.querySelector('.text-red-400:not(.hidden)');
+          if (firstError) {
+            firstError.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return false;
+        }
+      });
+    }
+  });
+
+  window.copyToClipboard = (text, element) => {
+    navigator.clipboard.writeText(text).then(() => {
+      const original = element.innerHTML;
+      element.innerHTML = '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+      setTimeout(() => {
+        element.innerHTML = original;
+      }, 2000);
     });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  };
 </script>
 
 </body>
