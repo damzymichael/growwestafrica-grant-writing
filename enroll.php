@@ -1,22 +1,49 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $location = $_POST['location'] ?? '';
-    $phone = $_POST['phone'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $location = trim($_POST['location'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
     
-    // Server-side validation
-    if (empty($name) || empty($email) || empty($location) || empty($phone) || empty($_FILES['receipt']['name'])) {
-        $error = "All fields are required.";
+    $errors = [];
+
+    // 1. Validation
+    if (empty($name)) $errors[] = "Name is required.";
+    elseif (!preg_match("/^[a-zA-Z\s]{2,50}$/", $name)) $errors[] = "Invalid name format.";
+
+    if (empty($email)) $errors[] = "Email is required.";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format.";
+
+    if (empty($location)) $errors[] = "Location is required.";
+
+    if (empty($phone)) $errors[] = "Phone number is required.";
+    elseif (!preg_match("/^\+?[0-9]{10,15}$/", $phone)) $errors[] = "Invalid phone number format.";
+
+    // File Validation
+    if (!isset($_FILES['receipt']) || $_FILES['receipt']['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = "Please upload a payment receipt.";
     } else {
-        $env = parse_ini_file('.env'); 
-        // --- 1. Cloudinary Upload ---
-        $cloudinary_cloud_name = $env['CLOUDINARY_CLOUD_NAME'];
-        $cloudinary_api_key = $env['CLOUDINARY_API_KEY'];
-        $cloudinary_api_secret = $env['CLOUDINARY_API_SECRET'];
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        $fileType = $_FILES['receipt']['type'];
+        $fileSize = $_FILES['receipt']['size']; // bytes
+        
+        if (!in_array($fileType, $allowedTypes)) {
+            $errors[] = "Only image files (JPG, PNG, WEBP) are allowed.";
+        }
+        if ($fileSize > 5 * 1024 * 1024) { // 5MB limit
+            $errors[] = "Image size must be less than 5MB.";
+        }
+    }
+
+    if (empty($errors)) {
+        // --- 2. Cloudinary Upload ---
+        $cloudinary_cloud_name = getenv('CLOUDINARY_CLOUD_NAME') ?: '';
+        $cloudinary_api_key = getenv('CLOUDINARY_API_KEY') ?: '';
+        $cloudinary_api_secret = getenv('CLOUDINARY_API_SECRET') ?: '';
         
         $timestamp = time();
-        $params_to_sign = "timestamp=" . $timestamp . $cloudinary_api_secret;
+        $folder = "grant-writing";
+        $params_to_sign = "folder=" . $folder . "&timestamp=" . $timestamp . $cloudinary_api_secret;
         $signature = sha1($params_to_sign);
 
         $cloudinary_url = "https://api.cloudinary.com/v1_1/$cloudinary_cloud_name/image/upload";
@@ -26,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         curl_setopt($ch_cloud, CURLOPT_POST, true);
         curl_setopt($ch_cloud, CURLOPT_POSTFIELDS, [
             'file' => new CURLFile($_FILES['receipt']['tmp_name']),
+            'folder' => $folder,
             'api_key' => $cloudinary_api_key,
             'timestamp' => $timestamp,
             'signature' => $signature
@@ -33,11 +61,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $cloud_response = curl_exec($ch_cloud);
         $cloud_data = json_decode($cloud_response, true);
+        $cloud_http_code = curl_getinfo($ch_cloud, CURLINFO_HTTP_CODE);
         curl_close($ch_cloud);
 
-        $receipt_url = $cloud_data['secure_url'] ?? "https://res.cloudinary.com/demo/image/upload/v123456789/upload_error.jpg";
-        
-        // --- 2. Google Sheets Integration ---
+        if ($cloud_http_code !== 200 || !isset($cloud_data['secure_url'])) {
+            header("Location: error.php");
+            exit();
+        }
+
+        $receipt_url = $cloud_data['secure_url'];
+        $public_id = $cloud_data['public_id']; // Get image ID for potential deletion
+
+        // --- 3. Google Sheets Integration ---
         $postData = json_encode([
             "name" => $name,
             "email" => $email,
@@ -46,30 +81,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "imageUrl" => $receipt_url
         ]);
 
-        $ch = curl_init($env['GOOGLE_SHEETS_DEPLOYMENT_URL']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        $gas_response = curl_exec($ch);
-        curl_close($ch);
-
-        // --- 3. Email Admin ---
-        $admin_email = $env['ADMIN_EMAIL'];
-        $subject = "New Enrollment: $name";
-        $message = "New enrollment details:\n\n" .
-                   "Name: $name\n" .
-                   "Email: $email\n" .
-                   "Phone: $phone\n" .
-                   "Location: $location\n" .
-                   "Receipt: $receipt_url\n";
-        $headers = "From: no-reply@growwestafrica.com";
+        $ch_sheets = curl_init(getenv('GOOGLE_SHEETS_DEPLOYMENT_URL'));
+        curl_setopt($ch_sheets, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch_sheets, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch_sheets, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch_sheets, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         
-        @mail($admin_email, $subject, $message, $headers);
+        $gas_response = curl_exec($ch_sheets);
+        $sheets_http_code = curl_getinfo($ch_sheets, CURLINFO_HTTP_CODE);
+        curl_close($ch_sheets);
 
-        // --- 4. Success Redirect ---
+        // If Google Sheets fails, delete from Cloudinary and redirect to error
+        if ($sheets_http_code < 200 || $sheets_http_code >= 300) {
+            // Delete image from Cloudinary
+            $timestamp_del = time();
+            $del_params = "public_id=" . $public_id . "&timestamp=" . $timestamp_del . $cloudinary_api_secret;
+            $del_signature = sha1($del_params);
+            
+            $ch_del = curl_init("https://api.cloudinary.com/v1_1/$cloudinary_cloud_name/image/destroy");
+            curl_setopt($ch_del, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch_del, CURLOPT_POST, true);
+            curl_setopt($ch_del, CURLOPT_POSTFIELDS, [
+                'public_id' => $public_id,
+                'api_key' => $cloudinary_api_key,
+                'timestamp' => $timestamp_del,
+                'signature' => $del_signature
+            ]);
+            curl_exec($ch_del);
+            curl_close($ch_del);
+
+            header("Location: error.php");
+            exit();
+        }
+
+        // --- 4. Email Admin using Resend API ---
+        $resend_api_key = getenv('RESEND_API_KEY') ?: '';
+        $admin_email = getenv('ADMIN_EMAIL') ?: 'admin@growwestafrica.com';
+        
+        $emailData = json_encode([
+            "from" => "Enrollment System <notifications@resend.dev>", // Or verified domain
+            "to" => [$admin_email],
+            "subject" => "New Enrollment Receipt: $name",
+            "html" => "
+                <h2>New Enrollment Received</h2>
+                <p><strong>Name:</strong> $name</p>
+                <p><strong>Email:</strong> $email</p>
+                <p><strong>Phone:</strong> $phone</p>
+                <p><strong>Location:</strong> $location</p>
+                <p><strong>Receipt URL:</strong> <a href='$receipt_url'>View Receipt</a></p>
+                <br>
+                <img src='$receipt_url' style='max-width:300px; border-radius: 8px;' alt='Receipt'>
+            "
+        ]);
+
+        $ch_resend = curl_init("https://api.resend.com/emails");
+        curl_setopt($ch_resend, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch_resend, CURLOPT_POST, true);
+        curl_setopt($ch_resend, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer $resend_api_key",
+            "Content-Type: application/json"
+        ]);
+        curl_setopt($ch_resend, CURLOPT_POSTFIELDS, $emailData);
+        curl_exec($ch_resend);
+        curl_close($ch_resend);
+
+        // --- 5. Success Redirect ---
         header("Location: thankyou.php");
         exit();
+    } else {
+        $error = implode("<br>", $errors);
     }
 }
 ?>
@@ -148,7 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="glass rounded-[2rem] p-6 mb-8 border-olive-500/20 relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-32 h-32 bg-olive-500/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-olive-500/20 transition-all duration-500"></div>
         
-        <div class="flex justify-between items-start mb-6">
+        <div class="flex justify-between items-start mb-4">
           <div>
             <p class="text-stone-500 text-xs uppercase tracking-widest font-bold mb-1">Investment</p>
             <div class="flex items-baseline gap-2">
@@ -161,9 +241,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
         </div>
 
+        <div class="mb-6 p-4 rounded-2xl bg-white/5 border border-white/10">
+          <p class="text-xs text-stone-300 leading-relaxed italic">
+            <span class="text-olive-400 font-bold not-italic">Action Required:</span> To secure your spot, please make your payment to one of the accounts below and upload the receipt in the form.
+          </p>
+        </div>
+
         <div class="space-y-4">
-          <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
-            <p class="text-[10px] text-stone-500 uppercase font-bold mb-2 tracking-wider">Bank Transfer</p>
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/5 hover:border-olive-500/30 transition-all duration-300">
+            <p class="text-[10px] text-olive-400 uppercase font-bold mb-2 tracking-wider">Option 1: Bank Transfer</p>
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-sm font-bold text-white">Access Bank</p>
@@ -175,8 +261,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
 
-          <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
-            <p class="text-[10px] text-stone-500 uppercase font-bold mb-2 tracking-wider">Mobile Money (MoMo)</p>
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/5 hover:border-olive-500/30 transition-all duration-300">
+            <p class="text-[10px] text-olive-400 uppercase font-bold mb-2 tracking-wider">Option 2: Mobile Money (MoMo)</p>
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-sm font-bold text-white">MTN Mobile Money</p>
@@ -189,6 +275,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
         </div>
       </div>
+
+      <?php if (isset($error)): ?>
+        <div class="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+          <?php echo $error; ?>
+        </div>
+      <?php endif; ?>
 
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data" class="space-y-6" novalidate>
         <div class="space-y-2">

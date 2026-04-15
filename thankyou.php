@@ -41,7 +41,7 @@
         
         <h1 class="text-4xl md:text-5xl font-black mb-6">Success!</h1>
         <p class="text-stone-300 text-lg mb-10 leading-relaxed">
-            Your enrollment has been received. We've sent a confirmation email to the address you provided. Get ready to master the art of grant writing!
+            We have received your payment request. We're currently verifying it and we'll get in contact with you shortly.
         </p>
 
         <a href="index.php" class="inline-flex items-center gap-3 bg-white text-dark-950 px-8 py-4 rounded-2xl font-bold hover:bg-olive-500 hover:text-white transition-all duration-300">
