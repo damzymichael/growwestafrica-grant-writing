@@ -52,7 +52,7 @@
     <a href="#" class="flex items-center gap-3">
       <img src="images/logo.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
     </a>
-    <div class="hidden md:flex flex-col items-center space-y-3 gap-8">
+    <div class="hidden md:flex items-center gap-8">
       <a href="#why" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Why Us</a>
       <a href="#outcomes" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Outcomes</a>
       <a href="#curriculum" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Curriculum</a>
@@ -62,7 +62,7 @@
       <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-3">
+  <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-4">
     <a href="#why" class="block text-stone-300 hover:text-olive-400">Why Us</a>
     <a href="#outcomes" class="block text-stone-300 hover:text-olive-400">Outcomes</a>
     <a href="#curriculum" class="block text-stone-300 hover:text-olive-400">Curriculum</a>
