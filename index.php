@@ -52,7 +52,7 @@
     <a href="#" class="flex items-center gap-3">
       <img src="images/logo.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
     </a>
-    <div class="hidden md:flex items-center gap-8">
+    <div class="hidden md:flex flex-col items-center space-y-3 gap-8">
       <a href="#why" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Why Us</a>
       <a href="#outcomes" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Outcomes</a>
       <a href="#curriculum" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Curriculum</a>
@@ -248,9 +248,9 @@
   <div class="absolute inset-0 bg-gradient-to-b from-dark-950 via-olive-900/5 to-dark-950"></div>
   <div class="relative max-w-4xl mx-auto px-6">
     <div class="text-center mb-16">
-      <span class="text-olive-400 font-semibold text-sm uppercase tracking-widest">2 Weeks of Training</span>
+      <span class="text-olive-400 font-semibold text-sm uppercase tracking-widest">5-Day Training</span>
       <h2 class="text-3xl md:text-5xl font-bold mt-3 mb-4">Course <span class="gradient-text">Curriculum</span></h2>
-      <p class="text-stone-400 max-w-2xl mx-auto text-lg">A comprehensive 2-week program designed to take you from beginner to confident grant writer.</p>
+      <p class="text-stone-400 max-w-2xl mx-auto text-lg">A comprehensive 5-day program designed to take you from beginner to confident grant writer.</p>
     </div>
     <div class="space-y-6">
       <!-- Day 1 -->
@@ -575,7 +575,7 @@
   <div class="relative max-w-3xl mx-auto px-6 text-center">
     <div class="glass rounded-3xl p-12 md:p-16">
       <h2 class="text-3xl md:text-5xl font-bold mb-6">Click below to <span class="gradient-text">secure your spot</span> now</h2>
-      <a href="enroll.php" class="inline-block btn-primary px-12 py-5 rounded-full text-white font-bold text-xl glow"><span>Enroll Now — Secure Your Spot</span></a>
+      <a href="enroll.php" class="inline-block btn-primary px-12 py-5 rounded-full text-white font-bold text-lg sm:text-xl glow"><span>Enroll Now</span></a>
     </div>
   </div>
 </section>
