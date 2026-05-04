@@ -232,13 +232,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div>
             <p class="text-stone-500 text-xs uppercase tracking-widest font-bold mb-1">Investment</p>
             <div class="flex items-baseline gap-2">
-              <span class="text-3xl font-black text-white">GHS 1,000</span>
-              <span class="text-sm text-stone-500 line-through">GHS 5,000</span>
+              <span class="text-3xl font-black text-white">GHS 2,000</span>
+              <!-- <span class="text-sm text-stone-500 line-through">GHS 5,000</span> -->
             </div>
           </div>
-          <div class="bg-olive-500/20 text-olive-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight border border-olive-500/30">
+          <!-- <div class="bg-olive-500/20 text-olive-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight border border-olive-500/30">
             80% OFF TODAY
-          </div>
+          </div> -->
         </div>
 
         <div class="mb-6 p-4 rounded-2xl bg-white/5 border border-white/10">
@@ -252,10 +252,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="text-[10px] text-olive-400 uppercase font-bold mb-2 tracking-wider">Option 1: Bank Transfer</p>
             <div class="flex justify-between items-center">
               <div>
-                <p class="text-sm font-bold text-white">Access Bank</p>
-                <p class="text-xs text-stone-400">Account: 0123456789</p>
+                <p class="text-sm font-bold text-white">Ghana Commercial Bank/Wenchi Branch</p>
+                <p class="text-xs text-stone-400">Name: GROW WEST AFRICA LBG</p>
+                <p class="text-xs text-stone-400">Account: 7111130002062</p>
               </div>
-              <button onclick="copyToClipboard('0123456789', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
+              <button onclick="copyToClipboard('7111130002062', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
               </button>
             </div>
@@ -265,10 +266,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="text-[10px] text-olive-400 uppercase font-bold mb-2 tracking-wider">Option 2: Mobile Money (MoMo)</p>
             <div class="flex justify-between items-center">
               <div>
-                <p class="text-sm font-bold text-white">MTN Mobile Money</p>
-                <p class="text-xs text-stone-400">Number: 0540000000</p>
+                <p class="text-sm font-bold text-white">Mobile Money</p>
+                <p class="text-xs text-stone-400">Name: GROW WEST AFRICA</p>
+                <p class="text-xs text-stone-400">Number: 0555140319</p>
               </div>
-              <button onclick="copyToClipboard('0540000000', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
+              <button onclick="copyToClipboard('0555140319', this)" class="text-olive-400 hover:text-olive-300 p-2 rounded-lg hover:bg-olive-500/10 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
               </button>
             </div>
