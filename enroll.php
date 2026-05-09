@@ -201,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <nav class="w-full z-50 glass sticky top-0">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     <a href="index.php" class="flex items-center gap-3">
-      <img src="images/logo.png" alt="Logo" class="h-10">
+      <img src="images/grow-academy-logo-no-bg.png" alt="Grow West Africa Academy" class="h-10 brightness-125 contrast-110">
     </a>
     <a href="index.php" class="text-stone-400 hover:text-white transition text-sm font-medium flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
