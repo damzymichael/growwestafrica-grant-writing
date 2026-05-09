@@ -14,7 +14,8 @@
         extend: {
           fontFamily: { inter: ['Inter', 'sans-serif'] },
           colors: {
-            olive: { 50:'#f6f9f0',100:'#e9f0d9',200:'#d4e2b5',300:'#b5cd82',400:'#96b55a',500:'#6b8c42',600:'#5b7b32',700:'#4a6428',800:'#3d5123',900:'#344521' },
+            olive: { 50:'#f3fbf1',100:'#e1f6db',200:'#c3ecb8',300:'#94da83',400:'#5abf43',500:'#3b9f26',600:'#2b7e1a',700:'#236517',800:'#205117',900:'#0f481c' },
+            gold: { 300:'#f2bd5f',400:'#dea238',500:'#c58b21',600:'#a36c16' },
             stone: { 50:'#fafaf9',100:'#f0efed',200:'#d9d7d2',300:'#b8b5ae',400:'#9e9a92',500:'#848078',600:'#6e6b64',700:'#5a5852',800:'#4b4945',900:'#41403c' },
             dark: { 800:'#1e1e24',900:'#141418',950:'#0c0c0f' }
           }
@@ -27,22 +28,22 @@
     body{font-family:'Inter',sans-serif}
     @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    @keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(107,140,66,.25)}50%{box-shadow:0 0 40px rgba(107,140,66,.5)}}
+    @keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(59,159,38,.35)}50%{box-shadow:0 0 40px rgba(59,159,38,.6)}}
     .fade-up{animation:fadeUp .8s ease forwards;opacity:0}
     .delay-1{animation-delay:.2s}.delay-2{animation-delay:.4s}.delay-3{animation-delay:.6s}.delay-4{animation-delay:.8s}
     .float-anim{animation:float 3s ease-in-out infinite}
     .glow{animation:pulse-glow 2s ease-in-out infinite}
     .glass{background:rgba(255,255,255,.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
-    .olive-glass{background:rgba(107,140,66,.08);backdrop-filter:blur(10px);border:1px solid rgba(107,140,66,.2)}
-    .gradient-text{background:linear-gradient(135deg,#6b8c42,#96b55a,#b5cd82);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .olive-glass{background:rgba(59,159,38,.08);backdrop-filter:blur(10px);border:1px solid rgba(59,159,38,.2)}
+    .gradient-text{background:linear-gradient(135deg,#3b9f26,#5abf43,#c58b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .card-hover{transition:all .4s cubic-bezier(.25,.8,.25,1)}
-    .card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(107,140,66,.15)}
-    .btn-primary{background:linear-gradient(135deg,#5b7b32,#6b8c42);transition:all .3s ease;position:relative;overflow:hidden}
-    .btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#6b8c42,#96b55a);opacity:0;transition:opacity .3s}
+    .card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(59,159,38,.15)}
+    .btn-primary{background:linear-gradient(135deg,#2b7e1a,#3b9f26);transition:all .3s ease;position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#3b9f26,#c58b21);opacity:0;transition:opacity .3s}
     .btn-primary:hover::after{opacity:1}
     .btn-primary span{position:relative;z-index:1}
-    .progress-ring{background:conic-gradient(#6b8c42 0deg,#6b8c42 342deg,rgba(255,255,255,.08) 342deg)}
-    .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(107,140,66,.3),transparent)}
+    .progress-ring{background:conic-gradient(#3b9f26 0deg,#3b9f26 342deg,rgba(255,255,255,.08) 342deg)}
+    .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(59,159,38,.3),transparent)}
   </style>
 </head>
 <body class="bg-dark-950 text-white overflow-x-hidden">
@@ -73,7 +74,7 @@
 </nav>
 
 <!-- Hero -->
-<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+<section class="relative min-h-screen flex items-center pt-20 pb-10 overflow-hidden">
   <div class="absolute inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-olive-900/10"></div>
   <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-olive-500/5 rounded-full blur-[100px]"></div>
   <div class="absolute bottom-10 left-10 w-72 h-72 bg-olive-600/5 rounded-full blur-[80px]"></div>
@@ -314,6 +315,57 @@
           <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-olive-400 rounded-full"></span><span class="text-stone-300">Homework assignments with feedback</span></div>
           <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-olive-400 rounded-full"></span><span class="text-stone-300">Peer review &amp; instructor critique</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider max-w-7xl mx-auto"></div>
+
+<!-- Instructor Section -->
+<section id="instructor" class="py-24 relative">
+  <div class="absolute inset-0 bg-dark-950"></div>
+  <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gold-500/5 rounded-full blur-[100px]"></div>
+  <div class="relative max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="relative">
+        <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src="images/mr-david-benedict.jpg" alt="David Benedict" class="w-full h-[500px] object-cover object-top"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute -bottom-6 -right-6 olive-glass rounded-2xl p-4 fade-up">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-olive-500/20 rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>
+            </div>
+            <div>
+              <p class="text-white font-semibold text-sm">Lead Instructor</p>
+              <p class="text-gold-400 text-xs">Expert</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="text-gold-400 font-semibold text-sm uppercase tracking-widest">Instructor</span>
+        <h2 class="text-3xl md:text-5xl font-bold mt-3 mb-2">David <span class="gradient-text">Benedict</span></h2>
+        <p class="text-olive-400 text-sm font-medium mb-6">B.TH/B.Ed. MBA (Member, Chartered Institute of Tax Law and Forensic Accountant, Ghana)</p>
+        <p class="text-stone-400 text-lg mb-6 leading-relaxed">
+          With extensive experience in grant writing, business funding, and project execution across Africa, David Benedict has mastered the art of securing high-value opportunities. He brings unparalleled expertise to guide you step-by-step toward mastering grant proposals that win.
+        </p>
+        <ul class="space-y-4 text-stone-300">
+          <li class="flex items-center gap-3">
+            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+            Proven track record of securing grants.
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+            Forensic accounting &amp; tax law expertise.
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+            Passionate about empowering African entrepreneurs.
+          </li>
+        </ul>
       </div>
     </div>
   </div>

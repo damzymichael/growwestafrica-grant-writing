@@ -169,7 +169,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         extend: {
           fontFamily: { inter: ['Inter', 'sans-serif'] },
           colors: {
-            olive: { 50:'#f6f9f0',100:'#e9f0d9',200:'#d4e2b5',300:'#b5cd82',400:'#96b55a',500:'#6b8c42',600:'#5b7b32',700:'#4a6428',800:'#3d5123',900:'#344521' },
+            olive: { 50:'#f3fbf1',100:'#e1f6db',200:'#c3ecb8',300:'#94da83',400:'#5abf43',500:'#3b9f26',600:'#2b7e1a',700:'#236517',800:'#205117',900:'#0f481c' },
+            gold: { 300:'#f2bd5f',400:'#dea238',500:'#c58b21',600:'#a36c16' },
             stone: { 50:'#fafaf9',100:'#f0efed',200:'#d9d7d2',300:'#b8b5ae',400:'#9e9a92',500:'#848078',600:'#6e6b64',700:'#5a5852',800:'#4b4945',900:'#41403c' },
             dark: { 800:'#1e1e24',900:'#141418',950:'#0c0c0f' }
           }
@@ -184,14 +185,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .fade-up{animation:fadeUp .8s ease forwards;opacity:0}
     .delay-1{animation-delay:.2s}.delay-2{animation-delay:.4s}.delay-3{animation-delay:.6s}
     .glass{background:rgba(255,255,255,.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
-    .olive-glass{background:rgba(107,140,66,.08);backdrop-filter:blur(10px);border:1px solid rgba(107,140,66,.2)}
-    .gradient-text{background:linear-gradient(135deg,#6b8c42,#96b55a,#b5cd82);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .btn-primary{background:linear-gradient(135deg,#5b7b32,#6b8c42);transition:all .3s ease;position:relative;overflow:hidden}
-    .btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#6b8c42,#96b55a);opacity:0;transition:opacity .3s}
+    .olive-glass{background:rgba(59,159,38,.08);backdrop-filter:blur(10px);border:1px solid rgba(59,159,38,.2)}
+    .gradient-text{background:linear-gradient(135deg,#3b9f26,#5abf43,#c58b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .btn-primary{background:linear-gradient(135deg,#2b7e1a,#3b9f26);transition:all .3s ease;position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#3b9f26,#c58b21);opacity:0;transition:opacity .3s}
     .btn-primary:hover::after{opacity:1}
     .btn-primary span{position:relative;z-index:1}
     .input-field{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);transition:all .3s ease}
-    .input-field:focus{background:rgba(107,140,66,.05);border-color:#6b8c42;outline:none;box-shadow:0 0 15px rgba(107,140,66,.1)}
+    .input-field:focus{background:rgba(59,159,38,.05);border-color:#3b9f26;outline:none;box-shadow:0 0 15px rgba(59,159,38,.1)}
   </style>
 </head>
 <body class="bg-dark-950 text-white overflow-x-hidden min-h-screen flex flex-col">
