@@ -160,6 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enrollment | Grant Writing Master Class</title>
   <meta name="description" content="Secure your spot in the upcoming Grant Writing Master Class. Fill out the form to begin your journey."/>
+   <link rel="icon" type="image/svg+xml" href="images/grow-academy-logo-mini.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script>

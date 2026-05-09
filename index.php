@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Grant Writing Master Class | Grow West Africa Academy</title>
   <meta name="description" content="Master the art of winning grant proposals. Learn proven strategies that have helped secure over $100k+ in grants."/>
+   <link rel="icon" type="image/svg+xml" href="images/grow-academy-logo-mini.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script>
@@ -50,7 +51,7 @@
 <nav class="sticky top-0 w-full z-50 glass">
   <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
     <a href="#" class="flex items-center gap-3">
-      <img src="images/logo.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
+      <img src="images/grow-academy-logo-no-bg.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
     </a>
     <div class="hidden md:flex items-center gap-8">
       <a href="#why" class="text-stone-300 hover:text-olive-400 transition text-sm font-medium">Why Us</a>
