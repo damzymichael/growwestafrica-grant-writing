@@ -95,7 +95,7 @@
         Used by aspiring entrepreneurs, students, and NGO leaders across Africa
       </div>
       <div class="fade-up delay-3 flex flex-wrap gap-4 mb-12">
-        <a href="enroll.php" class="btn-primary px-8 py-4 rounded-full text-white font-bold text-lg glow"><span>Join the Grant Writing Masterclass</span></a>
+        <a href="enroll.php" class="btn-primary px-8 py-4 rounded-full text-white font-bold text-lg glow"><span>Enroll now</span></a>
         <a href="#curriculum" class="glass px-8 py-4 rounded-full text-white font-semibold hover:bg-white/10 transition">View Curriculum</a>
       </div>
       <!-- Stats Row -->
@@ -636,7 +636,7 @@
 <!-- Footer -->
 <footer class="py-12 border-t border-white/5">
   <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <img src="images/logo.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
+          <img src="images/grow-academy-logo-no-bg.png" alt="Grow West Africa Academy" class="h-12 brightness-125 contrast-110">
     <p class="text-stone-600 text-sm">&copy; 2026 Grow West Africa. All rights reserved.</p>
   </div>
 </footer>
