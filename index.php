@@ -322,6 +322,37 @@
 
 <div class="section-divider max-w-7xl mx-auto"></div>
 
+<!-- Testimonial Section -->
+<section id="testimonial" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-dark-950"></div>
+  <div class="absolute top-0 left-0 w-[400px] h-[400px] bg-olive-500/5 rounded-full blur-[100px]"></div>
+  <div class="relative max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="text-olive-400 font-semibold text-sm uppercase tracking-widest">Success Story</span>
+      <h2 class="text-3xl md:text-5xl font-bold mt-3 mb-4">Real <span class="gradient-text">Results</span></h2>
+    </div>
+    <div class="relative">
+      <div class="absolute -top-6 -left-6 text-olive-500/20">
+        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="glass rounded-3xl p-8 md:p-12 relative z-10 text-center" style="border-color:rgba(107,140,66,.25)">
+        <p class="text-xl md:text-2xl text-stone-300 italic leading-relaxed mb-8">
+          "I know the trainer, in 2024, he helped my organization write a grant and secured $61,000(US Dollar) and 6 months later in 2025m he helped secure another $30,000(US Dollar)."
+        </p>
+        <div class="flex items-center justify-center gap-4">
+          <div class="w-14 h-14 bg-olive-600 rounded-full flex items-center justify-center text-white font-bold text-xl">O</div>
+          <div class="text-left">
+            <h4 class="text-lg font-bold text-white">Olawunmi</h4>
+            <p class="text-olive-400 text-sm">Grant Recipient</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider max-w-7xl mx-auto"></div>
+
 <!-- Instructor Section -->
 <section id="instructor" class="py-24 relative">
   <div class="absolute inset-0 bg-dark-950"></div>
@@ -352,20 +383,35 @@
         <p class="text-stone-400 text-lg mb-6 leading-relaxed">
           With extensive experience in grant writing, business funding, and project execution across Africa, David Benedict has mastered the art of securing high-value opportunities. He brings unparalleled expertise to guide you step-by-step toward mastering grant proposals that win.
         </p>
-        <ul class="space-y-4 text-stone-300">
-          <li class="flex items-center gap-3">
-            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
-            Proven track record of securing grants.
-          </li>
-          <li class="flex items-center gap-3">
-            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
-            Forensic accounting &amp; tax law expertise.
-          </li>
-          <li class="flex items-center gap-3">
-            <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
-            Passionate about empowering African entrepreneurs.
-          </li>
-        </ul>
+        <div class="mb-6">
+          <h4 class="text-white font-bold mb-4">21 years experience in:</h4>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-stone-300">
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Capital market
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Accounting, Auditing & Taxation
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Marketing & Sales
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Capacity Development
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Grant Writing
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-gold-400 rounded-full shrink-0"></span>
+              Tech - Cybersecurity
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
