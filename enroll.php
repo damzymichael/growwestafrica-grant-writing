@@ -1,4 +1,5 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -114,15 +115,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        // --- 4. Email Admin using Resend API ---
-        $resend_api_key = getenv('RESEND_API_KEY') ?: '';
-        $admin_email = getenv('ADMIN_EMAIL') ?: 'admin@growwestafrica.com';
+        // --- 4. Email Admin using Brevo API ---
+        $brevo_api_key = trim($_SERVER['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY') ?? '');
+        $admin_email = trim($_SERVER['ADMIN_EMAIL'] ?? getenv('ADMIN_EMAIL') ?? 'admin@growwestafrica.com');
+        error_log($brevo_api_key);
         
         $emailData = json_encode([
-            "from" => "Enrollment System <notifications@resend.dev>", // Or verified domain
-            "to" => [$admin_email],
+            "sender" => [
+                "name" => "Enrollment System",
+                "email" => "michaelolsen184@gmail.com"
+            ],
+            "to" => [
+                [
+                    "email" => $admin_email,
+                    "name" => "Admin"
+                ]
+            ],
             "subject" => "New Enrollment Receipt: $name",
-            "html" => "
+            "htmlContent" => "
                 <h2>New Enrollment Received</h2>
                 <p><strong>Name:</strong> $name</p>
                 <p><strong>Email:</strong> $email</p>
@@ -134,16 +144,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "
         ]);
 
-        $ch_resend = curl_init("https://api.resend.com/emails");
-        curl_setopt($ch_resend, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch_resend, CURLOPT_POST, true);
-        curl_setopt($ch_resend, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer $resend_api_key",
-            "Content-Type: application/json"
+        $ch_brevo = curl_init("https://api.brevo.com/v3/smtp/email");
+        curl_setopt($ch_brevo, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch_brevo, CURLOPT_POST, true);
+        curl_setopt($ch_brevo, CURLOPT_HTTPHEADER, [
+            "accept: application/json",
+            "api-key: $brevo_api_key",
+            "content-type: application/json"
         ]);
-        curl_setopt($ch_resend, CURLOPT_POSTFIELDS, $emailData);
-        curl_exec($ch_resend);
-        curl_close($ch_resend);
+        curl_setopt($ch_brevo, CURLOPT_POSTFIELDS, $emailData);
+        
+        $brevo_response = curl_exec($ch_brevo);
+        $brevo_http_code = curl_getinfo($ch_brevo, CURLINFO_HTTP_CODE);
+        $brevo_error = curl_error($ch_brevo);
+        curl_close($ch_brevo);
+
+        if ($brevo_http_code >= 300 || $brevo_error) {
+            error_log("Brevo API Error: HTTP $brevo_http_code. cURL Error: $brevo_error. Response: $brevo_response");
+        } else {
+            error_log("Brevo API Success: $brevo_response");
+        }
 
         // --- 5. Success Redirect ---
         header("Location: thankyou.php");
